@@ -216,7 +216,7 @@ public class Auth : MonoBehaviour
                 {
                     Debug.Log($"{u.username}\", SCORE: {u.data.score},");
                 }
-                for (int i = 0; i < data.usuarios.Length; i++)
+                for (int i = 0; i < data.usuarios.Length && i < names.Length && i < scores.Length; i++)
                 {
                     names[i].text = data.usuarios[i].username;
                     scores[i].text = data.usuarios[i].data.score.ToString();
