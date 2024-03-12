@@ -24,7 +24,7 @@ public class Auth : MonoBehaviour
     public TMP_Text welcomeText;
     public TMP_Text scoreText;
 
-    // public GameObject panelLead;
+     public GameObject panelLead;
     public TMP_Text[] names;
     public TMP_Text[] scores;
 
@@ -32,7 +32,7 @@ public class Auth : MonoBehaviour
     void Start()
     {
         panelGame.SetActive(false);
-     //   panelLead.SetActive(false);
+        panelLead.SetActive(false);
 
         Token = PlayerPrefs.GetString("token");
 
@@ -210,7 +210,7 @@ public class Auth : MonoBehaviour
                 //PlayerPrefs.SetString("token", data.token);
                 //PlayerPrefs.SetString("username", data.usuario.username);
                 //data.usuarios = data.usuarios.Where(u => u.userData.score > 5).ToArray();
-             //   panelLead.SetActive(true);
+                panelLead.SetActive(true);
                 data.usuarios = data.usuarios.OrderByDescending(u => u.data.score).Take(5).ToArray();
                 foreach (User u in data.usuarios)
                 {
