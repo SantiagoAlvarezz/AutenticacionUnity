@@ -29,6 +29,7 @@ public class Auth : MonoBehaviour
      public GameObject panelLead;
     public TMP_Text[] names;
     public TMP_Text[] scores;
+    public TMP_Text confirmacionregistro;
 
 
     void Start()
@@ -192,7 +193,7 @@ public class Auth : MonoBehaviour
             if (request.responseCode == 200)
             {
                 AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
-
+                confirmacionregistro.text = "Registro exitoso!";
                 Debug.Log("User " + data.usuario._id + " registered");
             }
             else
