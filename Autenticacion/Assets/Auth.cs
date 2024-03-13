@@ -113,8 +113,9 @@ public class Auth : MonoBehaviour
     }
     IEnumerator GetProfile(string username)
     {
+        string token = PlayerPrefs.GetString("token");
         UnityWebRequest request = UnityWebRequest.Get(ApiUrl + "/usuarios/" + username);
-        request.SetRequestHeader("x-token", Token);
+        request.SetRequestHeader("x-token", token);
         yield return request.SendWebRequest();
         if (request.isNetworkError)
         {
