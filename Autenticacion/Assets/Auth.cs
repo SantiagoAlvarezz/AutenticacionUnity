@@ -16,7 +16,7 @@ public class Auth : MonoBehaviour
     TMP_InputField usernameInput;
     TMP_InputField passwordInput;
 
-    private string Token;
+    //private string Token;
     private string Username;
     private int Score;
 
@@ -36,9 +36,9 @@ public class Auth : MonoBehaviour
         panelGame.SetActive(false);
         panelLead.SetActive(false);
 
-        Token = PlayerPrefs.GetString("token");
+        //Token = PlayerPrefs.GetString("token");
 
-        if (string.IsNullOrEmpty(Token))
+       /* if (string.IsNullOrEmpty(Token))
         {
             Debug.LogWarning("No hay Token almacenado");
         }
@@ -50,7 +50,7 @@ public class Auth : MonoBehaviour
             //StartCoroutine(ChangeScores(Username));
             //StartCoroutine(OrderScores(Username));
 
-        }
+        }*/
 
         usernameInput = GameObject.Find("usernameInput").GetComponent<TMP_InputField>();
         passwordInput = GameObject.Find("passwordInput").GetComponent<TMP_InputField>();
@@ -88,7 +88,7 @@ public class Auth : MonoBehaviour
         panelRegister.SetActive(true);
         panelPuntajes.SetActive(false);
     }
-    public void ChangeScore()
+    /* public void ChangeScore()
     {
         AuthData authData = new AuthData();
         authData.data = new UserData();
@@ -96,10 +96,42 @@ public class Auth : MonoBehaviour
         authData.data.score = Score;
         Score += 300;
         authData.data.score = Score;
-
+        
         string json = JsonUtility.ToJson(authData);
         StartCoroutine(ChangeScores(json));
+    }*/
+    public void ChangeScore()
+    {
+        // Check if the Username is not null or empty
+        if (!string.IsNullOrEmpty(Username))
+        {
+            // Get the current score from PlayerPrefs
+            int currentScore = PlayerPrefs.GetInt("score");
+
+            // Add 300 to the current score
+            int newScore = currentScore + 300;
+
+            // Update the PlayerPrefs with the new score
+            PlayerPrefs.SetInt("score", newScore);
+
+            // Update the score display
+            scoreText.text = "Score:  " + newScore;
+
+            // Send the score change to the server
+            AuthData authData = new AuthData();
+            authData.data = new UserData();
+            authData.username = Username;
+            authData.data.score = newScore; // Send the new score to the server
+
+            string json = JsonUtility.ToJson(authData);
+            StartCoroutine(ChangeScores(json));
+        }
+        else
+        {
+            Debug.LogWarning("Username is null or empty.");
+        }
     }
+
     public void ShowScores()
     {
         AuthData authData = new AuthData();
@@ -190,6 +222,7 @@ public class Auth : MonoBehaviour
             {
                 AuthData data = JsonUtility.FromJson<AuthData>(request.downloadHandler.text);
                 Debug.Log("User " + data.usuario.username + " logged in");
+                Username = data.usuario.username;
                 PlayerPrefs.SetString("token", data.token);
                 PlayerPrefs.SetString("username", data.usuario.username);
                 PlayerPrefs.SetInt("score", data.usuario.data.score);
