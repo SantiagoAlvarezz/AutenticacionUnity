@@ -164,7 +164,7 @@ public class Auth : MonoBehaviour
                 Debug.Log("User " + data.usuario.username + " initialized game");
                 Debug.Log("Score: " + data.usuario.data.score);
                 panelGame.SetActive(true);
-                welcomeText.text = "Wecolme " + data.usuario.username;
+                welcomeText.text = "Hola " + data.usuario.username;
                 scoreText.text = "Score:  " + data.usuario.data.score;
                 //SceneManager.LoadScene("Game");
 
