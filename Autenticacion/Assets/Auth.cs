@@ -21,6 +21,8 @@ public class Auth : MonoBehaviour
     private int Score;
 
     public GameObject panelGame;
+    public GameObject panelRegister;
+    public GameObject panelPuntajes;
     public TMP_Text welcomeText;
     public TMP_Text scoreText;
 
@@ -72,6 +74,19 @@ public class Auth : MonoBehaviour
         string json = JsonUtility.ToJson(authData);
         StartCoroutine(SendLogin(json));
 
+    }
+    public void Logout()
+    {
+        // Clear stored token and username
+        PlayerPrefs.DeleteKey("token");
+        PlayerPrefs.DeleteKey("username");
+
+        // Hide the game panel
+        panelGame.SetActive(false);
+
+        // Show the register panel
+        panelRegister.SetActive(true);
+        panelPuntajes.SetActive(false);
     }
     public void ChangeScore()
     {
@@ -193,8 +208,9 @@ public class Auth : MonoBehaviour
     }
     IEnumerator OrderScores()
     {
+        string token = PlayerPrefs.GetString("token");
         UnityWebRequest request = UnityWebRequest.Get(ApiUrl + "/usuarios");
-        request.SetRequestHeader("x-token", Token);
+        request.SetRequestHeader("x-token", token);
         //request.method = "PATCH";
         yield return request.SendWebRequest();
         if (request.isNetworkError)
@@ -226,8 +242,9 @@ public class Auth : MonoBehaviour
     }
     IEnumerator ChangeScores(string json)
     {
+        string token = PlayerPrefs.GetString("token");
         UnityWebRequest request = UnityWebRequest.Put(ApiUrl + "/usuarios", json);
-        request.SetRequestHeader("x-token", Token);
+        request.SetRequestHeader("x-token", token);
         request.method = "PATCH";
         request.SetRequestHeader("Content-Type", "application/json");
         yield return request.SendWebRequest();
